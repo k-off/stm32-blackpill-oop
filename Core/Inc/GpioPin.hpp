@@ -34,10 +34,10 @@ public:
 
 	/*
 	 * @brief Read value on the pin
-	 * @retval int16_t
+	 * @retval Hi or Lo
 	 */
-	int16_t Read() const {
-		return port->IDR |= (1 << idx);
+	State Read() const {
+		return (State)(port->IDR & (1 << idx) >> idx);
 	}
 
 	/*
@@ -45,7 +45,7 @@ public:
 	 * @param	int16_t &val value to store data in
 	 * @retval	const PIN&
 	 */
-	const PIN& Read(uint16_t &val) const {
+	const PIN& Read(State &val) const {
 		val = Read();
 		return *this;
 	}
@@ -67,8 +67,8 @@ public:
 	 * @retval	const PIN&
 	 */
 	const PIN& Set(Mode mode, Alt af=Alt::F0) const {
-		port->MODER &= ~(3 << (idx << 2));
-		port->MODER |= ((uint32_t)mode << (idx << 2));
+		port->MODER &= ~(3 << (idx << 1));
+		port->MODER |= ((uint32_t)mode << (idx << 1));
 		if (mode == Mode::AF) {
 			port->AFR[idx > 7] &= ~(15 << (idx << 4));
 			port->AFR[idx > 7] |= ((uint32_t)af << (idx << 4));
@@ -82,8 +82,8 @@ public:
 	 * @retval	const PIN&
 	 */
 	const PIN& Set(Speed speed) const {
-		port->OSPEEDR &= ~(3 << (idx << 2));
-		port->OSPEEDR |= ((uint32_t)speed << (idx << 2));
+		port->OSPEEDR &= ~(3 << (idx << 1));
+		port->OSPEEDR |= ((uint32_t)speed << (idx << 1));
 		return *this;
 	}
 
@@ -103,8 +103,8 @@ public:
 	 * @retval	const PIN&
 	 */
 	const PIN& Set(PUPD p) const {
-		port->PUPDR &= ~(3 << (idx << 2));
-		port->PUPDR |= ((uint32_t)p << (idx << 2));
+		port->PUPDR &= ~(3 << (idx << 1));
+		port->PUPDR |= ((uint32_t)p << (idx << 1));
 		return *this;
 	}
 
@@ -114,7 +114,7 @@ public:
 	}
 
 	Mode  GetMode() const {
-		return (Mode)((port->MODER & (3 << (idx << 2))) >> (idx << 2));
+		return (Mode)((port->MODER & (3 << (idx << 1))) >> (idx << 1));
 	}
 
 	const PIN& Get(Alt& a) const {
@@ -134,7 +134,7 @@ public:
 	}
 
 	Speed GetSpeed() const {
-		return (Speed)((port->OSPEEDR & (3 << (idx << 2))) >> (idx << 2));
+		return (Speed)((port->OSPEEDR & (3 << (idx << 1))) >> (idx << 1));
 	}
 
 	const PIN& Get(OType& o) const {
@@ -152,7 +152,7 @@ public:
 	}
 
 	PUPD GetPUPD() const {
-		return (PUPD)((port->PUPDR & (3 << (idx << 2))) >> (idx << 2));
+		return (PUPD)((port->PUPDR & (3 << (idx << 1))) >> (idx << 1));
 	}
 
 private:

@@ -39,7 +39,7 @@ public:
 		if (!GPIO<pl>::Set(Status::Get)) {
 			GPIO<pl>::Set(Status::Enable); // enable gpio clock
 			for (uint32_t idx = 0; idx < 16; ++idx) {
-				if (pl == A && (idx == 7)) continue; // skip eeprom PIN (GPIOA[7])
+				if (pl == A && (idx == 13 || idx == 14)) continue; // skip header SCK pin (GPIOA[14])
 				pins[idx].Set(Mode::Output)
 						.Set(Speed::Low)
 						.Set(OType::PushPull)
