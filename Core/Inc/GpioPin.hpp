@@ -37,12 +37,12 @@ public:
 	 * @retval Hi or Lo
 	 */
 	State Read() const {
-		return (State)(port->IDR & (1 << idx) >> idx);
+		return (State)((port->IDR>> idx) & 1);
 	}
 
 	/*
 	 * @brief Read value on the pin
-	 * @param	int16_t &val value to store data in
+	 * @param	State &val value to store data in
 	 * @retval	const PIN&
 	 */
 	const PIN& Read(State &val) const {
