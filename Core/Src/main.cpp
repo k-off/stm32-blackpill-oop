@@ -118,7 +118,7 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-	  c[13].Write(a[5].Read());
+	  c[13].Write(a[0].Read());
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
