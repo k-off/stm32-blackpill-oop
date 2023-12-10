@@ -73,48 +73,52 @@ int main(void)
 
 
   /* USER CODE BEGIN Init */
-	  HAL_Init();
-	  GPIO<C> c1;
-	  c1.Init();
-	  GPIO<A> a1;
-	  a1.Init();
-	  GPIO<C> c2;
-	  c2.Init();
-	  GPIO<A> a2;
-	  a2.Init();
 
-	  Speed s{};
-	  OType o{};
-	  Mode m{};
-	  PUPD p{};
-	  Alt a{};
-	  uint16_t val{};
-	  c1[0].Set(Speed::High).Set(OType::PushPull).Set(Mode::AF, Alt::F1).Set(PUPD::PullUp)
-			  .Get(s).Get(o).Get(m).Get(p).Get(a).Write(Hi).Read(val);
   /* USER CODE END Init */
 
   /* Configure the system clock */
   SystemClock_Config();
 
   /* USER CODE BEGIN SysInit */
+  HAL_Init();
+  GPIO<C> c;
+  c.Init();
+  GPIO<A> a;
+  a.Init();
+  a[0].Set(Mode::Input).Set(OType::OpenDrain).Set(Speed::High).Set(PUPD::PullUp);
 
+  Speed s{};
+  OType o{};
+  Mode m{};
+  PUPD p{};
+  Alt al{};
+  State val{};
+//  MX_GPIO_Init();
+  c[13].
+  Set(Speed::High).
+  Set(OType::OpenDrain).
+  Set(Mode::Output).
+  Set(PUPD::NoPUPD).
+  Get(s).
+  Get(o).
+  Get(m).
+  Get(p).
+  Get(al).
+  Write(Hi).
+  Read(val);
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
-  MX_GPIO_Init();
+//  MX_GPIO_Init();
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */
-
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
     /* USER CODE END WHILE */
-	  c1[13].Write(Hi);
-	  HAL_Delay(750);
-	  c2[13].Write(Lo);
-	  HAL_Delay(250);
+	  c[13].Write(a[5].Read());
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
@@ -173,16 +177,16 @@ static void MX_GPIO_Init(void)
 /* USER CODE END MX_GPIO_Init_1 */
 
   /* GPIO Ports Clock Enable */
-  __HAL_RCC_GPIOC_CLK_ENABLE();
+//  __HAL_RCC_GPIOC_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_RESET);
+//  HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_RESET);
 
   /*Configure GPIO pin : PC13 */
   GPIO_InitStruct.Pin = GPIO_PIN_13;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+//  GPIO_InitStruct.Pull = GPIO_NOPULL;
+//  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
 /* USER CODE BEGIN MX_GPIO_Init_2 */
